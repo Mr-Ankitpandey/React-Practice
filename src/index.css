@@ -1,0 +1,15 @@
+.list-items {
+
+  display: flex;
+  justify-content: space-around;
+}
+.list-items li {
+  list-style: none;
+}
+a {
+  font-size: large;
+  text-decoration: none;
+}
+.active{
+  text-decoration: underline;
+}
