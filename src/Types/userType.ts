@@ -4,3 +4,5 @@ export interface userType {
     age: number,
     city: string
 }
+
+export type SelectFieldOptions = "Name" | "Age" | "City";

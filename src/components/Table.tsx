@@ -1,25 +1,29 @@
 import type { userType } from "../Types/userType";
 type TableProp = {
-    userData: userType[]
+    userData: userType[];
+
 }
 
-const Table = ({userData}: TableProp) => {
+const Table = ({userData }: TableProp) => {
+    
+    console.log("Table comoponent rendering.......", userData);
+    
   return (
     <>
     <table border={1}>
         <thead>
             <tr>
                 <th>Name</th>
-                <th>Age</th>
                 <th>City</th>
+                <th>Age</th>
             </tr>
         </thead>
         <tbody>
             {userData?.map((user) => (
                 <tr key={user?.id}>
                     <td>{user?.name}</td>
-                    <td>{user?.age}</td>
                     <td>{user?.city}</td>
+                    <td>{user?.age}</td>
                 </tr>
             ))}
         </tbody>
