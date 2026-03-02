@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom";
 
-const MainNavigation = () => {
+const MainNavbar = () => {
   return (
     <ul className="list-items">
       <li>
@@ -16,4 +16,4 @@ const MainNavigation = () => {
   );
 };
 
-export default MainNavigation;
+export default MainNavbar;

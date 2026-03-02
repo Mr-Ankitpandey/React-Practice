@@ -1,7 +1,12 @@
-const Filter = () => {
+import type { userType } from "../Types/userType";
+type FilterProp = {
+    userData: userType[]
+}
+
+const Filter = ({userData}: FilterProp) => {
   return (
     <>
-    <h1>Filters</h1>
+      <h1>Filters</h1>
       <label htmlFor="">Select Field : </label>
       <select>
         <option value="select-field">Select Field</option>
@@ -10,6 +15,7 @@ const Filter = () => {
       <label>Unique Values : </label>
       <select>
         <option value="unique-value">Select Field</option>
+        
       </select>
       <br /> <br />
       <button>Filter</button>
