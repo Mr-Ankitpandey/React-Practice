@@ -1,14 +1,15 @@
-import Filter from "../components/Filter"
-import User from "../components/User"
+import { UserProvider } from "../context/UserContext";
+import ContextUser from "../components/ContextUser";
+import ContextFilter from "../components/ContextFilter";
 
 const ContextPage = () => {
   return (
-    <>
-    <h1>Context</h1>
-        <User/>
-        <Filter/>
-    </>
-  )
-}
+    <UserProvider>
+      <h1>Context Page</h1>
+      <ContextUser />
+      <ContextFilter />
+    </UserProvider>
+  );
+};
 
-export default ContextPage
+export default ContextPage;

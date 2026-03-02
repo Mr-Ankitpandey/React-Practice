@@ -18,7 +18,7 @@ const StatePage = () => {
           id: Number(new Date()),
           name: user.name.trim(),
           city: user.city.trim(),
-          age: user.age,
+          age: Number(user.age),
         },
       ]);
     }
@@ -32,7 +32,7 @@ const StatePage = () => {
       <User
         passUserData={getUserData}
         userData={userData}
-        setUserData = {setUserData}
+        setUserData={setUserData}
       />
       <Filter userData={userData} />
     </>
