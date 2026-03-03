@@ -3,7 +3,7 @@ import type { userType } from "../Types/userType";
 type UserProp = {
   passUserData: (user: userType, isUpdate?: boolean) => void;
   userData: userType[];
-  setUserData:React.Dispatch<React.SetStateAction<userType[]>>
+  setUserData: React.Dispatch<React.SetStateAction<userType[]>>
 
 };
 
@@ -19,7 +19,6 @@ const User = ({ passUserData, userData, setUserData }: UserProp) => {
     const user = Object.fromEntries(fd);
     passUserData(user);
     setFormData({ name: "", city: "", age: "" });
-    
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -63,7 +62,7 @@ const User = ({ passUserData, userData, setUserData }: UserProp) => {
 
     passUserData(updatedUser, true);
   };
-  
+
   const handleDelete = (selectedId: number) => {
     setUserData((prevUsers) =>
       prevUsers.filter((user) => user.id !== selectedId),
@@ -121,7 +120,7 @@ const User = ({ passUserData, userData, setUserData }: UserProp) => {
       </form>
       <hr />
       <label htmlFor="select">Select based on ID: </label>
-      <select onChange={handleIdChange}>
+      <select onChange={handleIdChange} value={selectedId ?? "select-id"}>
         <option value="select-id">Select ID</option>
         {userData?.map((user) => (
           <option key={user?.id} value={user?.id}>
