@@ -1,21 +1,21 @@
 import { createContext, useState } from "react";
-import type { userType } from "../Types/userType";
+import type { filters, SelectFieldOptions, UserContextType, userType } from "../Types/userType";
 
-interface UserContextType {
-  userData: userType[];
-  addUser: (user: userType) => void;
-  updateUser: (user: userType) => void;
-  deleteUser: (id: number) => void;
-}
 
 export const UserContext = createContext<UserContextType>({
   userData : [],
   addUser : ()=> {},
   updateUser : ()=> {},
-  deleteUser : ()=> {}
+  deleteUser : ()=> {},
+  filterUser : ()=> {},
+  appliedFilter : null,
 })
 export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   const [userData, setUserData] = useState<userType[]>([]);
+   const [appliedFilter, setAppliedFilter] = useState<{
+    field: SelectFieldOptions;
+    value: string;
+  } | null>(null);
 
   const addUser = (user:userType) => {
     setUserData((prev) => [
@@ -37,16 +37,24 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     setUserData((prevUsers) => prevUsers?.filter((user) => user?.id !== selectedId));
   };
 
-  const showAllUsers  = () => {
-    
+  const filterUser  = (chosenfilter : filters | null) => {
+    if(chosenfilter=== null || chosenfilter?.selectedField === null){
+      setAppliedFilter(null)
+      return;
+    }
+    setAppliedFilter({
+      field: chosenfilter?.selectedField,
+      value: chosenfilter?.selectedValue,
+    });
   }
 
-  const ctxValue = {
+  const ctxValue: UserContextType = {
     userData,
     addUser,
     updateUser,
     deleteUser,
-    showAllUsers
+    filterUser,
+    appliedFilter
   }
 
   return (

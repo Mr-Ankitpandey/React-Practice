@@ -1,7 +1,6 @@
-import { useContext, useMemo, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import type { SelectFieldOptions } from "../Types/userType";
-import Table from "./Table";
-import { UserContext } from "../context/UserContext";
+import { useState } from "react";
 
 const selectFieldOptions: SelectFieldOptions[] = ["Name", "Age", "City"];
 
@@ -11,13 +10,13 @@ const fieldMap = {
   City: "city",
 } as const;
 
-const ContextFilter = () => {
-  const { userData, appliedFilter, filterUser } = useContext(UserContext)!;
-
+const ReduxFilter = () => {
   const [selectedField, setSelectedField] = useState<SelectFieldOptions | null>(
     null,
   );
   const [selectedValue, setSelectedValue] = useState<string>("");
+  const dispatch = useDispatch();
+  const filterUser = useSelector((state) => state.user.filterUser);
 
   const handleFieldChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value;
@@ -29,41 +28,27 @@ const ContextFilter = () => {
     setSelectedValue("");
   };
 
-  const uniqueValues = useMemo((): (string | number)[] => {
-    if (!selectedField) return [];
-    const key = fieldMap[selectedField];
-    const values = userData.map((user) => user[key]);
-    return [...new Set(values)];
-  }, [selectedField, userData]);
-
-  const handleUniqueChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedValue(e.target.value);
-  };
-
-  const displayData = useMemo(() => {
-    if (!appliedFilter) return userData;
-
-    const key = fieldMap[appliedFilter.field];
-    const filterVal =
-        key === "age" ? Number(appliedFilter.value) : appliedFilter.value;
-
-    return userData.filter((user) => user[key] === filterVal);
-}, [userData, appliedFilter]);
+  
+    const handleUniqueChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+      setSelectedValue(e.target.value);
+    };
+  
+   
 
   const handleFilter = () => {
     if (!selectedField || !selectedValue) {
       alert("Please select both a field and value.");
       return;
     }
-    filterUser({selectedField, selectedValue})
+    dispatch(filterUser({ selectedField, selectedValue }));
   };
 
-  const handleAll = () => {
-    filterUser(null)
-    setSelectedField(null);
-    setSelectedValue("");
-  };
 
+  const handleAll = ()=> {
+    dispatch(filterUser(null))
+    setSelectedField(null)
+    setSelectedValue("")
+  }
   return (
     <>
       <h1>Filters</h1>
@@ -103,4 +88,4 @@ const ContextFilter = () => {
   );
 };
 
-export default ContextFilter;
+export default ReduxFilter;

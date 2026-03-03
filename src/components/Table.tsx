@@ -5,7 +5,7 @@ type TableProp = {
 
 }
 
-const Table = memo(({userData}: TableProp) => {
+const Table = memo(({userData }: TableProp) => {
     
     console.log("Table comoponent rendering.......", userData);
     
