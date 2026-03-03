@@ -39,7 +39,7 @@ const User = ({ passUserData, userData, setUserData }: UserProp) => {
     }
     const id = Number(value);
     setSelectedId(id);
-    const selectedUser = userData.find((user) => user.id === id);
+    const selectedUser = userData?.find((user) => user.id === id);
 
     if (selectedUser) {
       setFormData({

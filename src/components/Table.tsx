@@ -1,10 +1,11 @@
+import { memo } from "react";
 import type { userType } from "../Types/userType";
 type TableProp = {
     userData: userType[];
 
 }
 
-const Table = ({userData }: TableProp) => {
+const Table = memo(({userData}: TableProp) => {
     
     console.log("Table comoponent rendering.......", userData);
     
@@ -30,6 +31,6 @@ const Table = ({userData }: TableProp) => {
     </table>
     </>
   )
-}
+});
 
 export default Table

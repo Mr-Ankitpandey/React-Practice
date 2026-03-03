@@ -2,40 +2,56 @@ import { createContext, useState } from "react";
 import type { userType } from "../Types/userType";
 
 interface UserContextType {
-    userData: userType[];
-    addUser: (user: Omit<userType, "id">) => void;
-    updateUser: (user: userType) => void;
-    deleteUser: (id: number) => void;
+  userData: userType[];
+  addUser: (user: userType) => void;
+  updateUser: (user: userType) => void;
+  deleteUser: (id: number) => void;
 }
 
-export const UserContext = createContext<UserContextType | null>(null);
-
+export const UserContext = createContext<UserContextType>({
+  userData : [],
+  addUser : ()=> {},
+  updateUser : ()=> {},
+  deleteUser : ()=> {}
+})
 export const UserProvider = ({ children }: { children: React.ReactNode }) => {
-    const [userData, setUserData] = useState<userType[]>([]);
+  const [userData, setUserData] = useState<userType[]>([]);
 
-    const addUser = (user: Omit<userType, "id">) => {
-        setUserData((prev) => [
-            ...prev,
-            {
-                id: Number(new Date()),
-                name: user.name.trim(),
-                city: user.city.trim(),
-                age: Number(user.age),
-            },
-        ]);
-    };
+  const addUser = (user:userType) => {
+    setUserData((prev) => [
+      ...prev,
+      {
+        id: Number(new Date()),
+        name: user?.name.trim(),
+        city: user?.city.trim(),
+        age: Number(user?.age),
+      },
+    ]);
+  };
 
-    const updateUser = (updated: userType) => {
-        setUserData((prev) => prev.map((u) => (u.id === updated.id ? updated : u)));
-    };
+  const updateUser = (updatedUser: userType) => {
+    setUserData((prevUsers) => prevUsers.map((u) => (u.id === updatedUser.id ? updatedUser : u)));
+  };
 
-    const deleteUser = (id: number) => {
-        setUserData((prev) => prev.filter((u) => u.id !== id));
-    };
+  const deleteUser = (selectedId: number) => {
+    setUserData((prevUsers) => prevUsers?.filter((user) => user?.id !== selectedId));
+  };
 
-    return (
-        <UserContext.Provider value={{ userData, addUser, updateUser, deleteUser }}>
-            {children}
-        </UserContext.Provider>
-    );
+  const showAllUsers  = () => {
+    
+  }
+
+  const ctxValue = {
+    userData,
+    addUser,
+    updateUser,
+    deleteUser,
+    showAllUsers
+  }
+
+  return (
+    <UserContext.Provider value={ctxValue}>
+      {children}
+    </UserContext.Provider>
+  );
 };

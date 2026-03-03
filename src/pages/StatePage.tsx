@@ -9,16 +9,16 @@ const StatePage = () => {
   const getUserData = (user: userType, isUpdate = false) => {
     if (isUpdate) {
       setUserData((prevUsers) =>
-        prevUsers.map((u) => (u.id === user.id ? user : u)),
+        prevUsers.map((u) => (u.id === user?.id ? user : u)),
       );
     } else {
       setUserData((prevUsers) => [
         ...prevUsers,
         {
           id: Number(new Date()),
-          name: user.name.trim(),
-          city: user.city.trim(),
-          age: Number(user.age),
+          name: user?.name.trim(),
+          city: user?.city.trim(),
+          age: Number(user?.age),
         },
       ]);
     }

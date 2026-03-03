@@ -1,4 +1,5 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useEffect, useMemo, useState } from "react";
 import type { SelectFieldOptions, userType } from "../Types/userType";
 import Table from "./Table";
 
@@ -6,10 +7,6 @@ type FilterProp = {
   userData: userType[];
 };
 
-<<<<<<< HEAD
-  const [selectedField, setSelectedField] = useState<string>("select-field");
-  const [selectedValue, setSelectedValue] = useState<string | null>("select-value");
-=======
 const selectFieldOptions: SelectFieldOptions[] = ["Name", "Age", "City"];
 
 const fieldMap = {
@@ -21,22 +18,16 @@ const fieldMap = {
 const Filter = ({ userData }: FilterProp) => {
   const [selectedField, setSelectedField] = useState<SelectFieldOptions | null>(null);
   const [selectedValue, setSelectedValue] = useState<string>("");
->>>>>>> 898b1e5c85c8fd96ad45f96038e69c96d63032d7
   const [filteredData, setFilteredData] = useState<userType[]>(userData);
-  const isFilter = useRef<boolean>(false);
+  const [isFilter, setIsFilter] = useState<boolean>(false)
 
   const handleFieldChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value;
     if (value === "select-field") {
-<<<<<<< HEAD
-      return;
-=======
       setSelectedField(null);
->>>>>>> 898b1e5c85c8fd96ad45f96038e69c96d63032d7
     } else {
-      setSelectedField(value);
+      setSelectedField(value as SelectFieldOptions);
     }
-    // Reset value selection when field changes
     setSelectedValue("");
   };
 
@@ -52,11 +43,11 @@ const Filter = ({ userData }: FilterProp) => {
   };
 
   useEffect(() => {
-    if (isFilter.current && selectedField && selectedValue) {
+    if (isFilter && selectedField && selectedValue) {
       const key = fieldMap[selectedField];
       const filterVal = key === "age" ? Number(selectedValue) : selectedValue;
       setFilteredData(userData.filter((user) => user[key] === filterVal));
-    } else if (!isFilter.current) {
+    } else if (!isFilter) {
       setFilteredData(userData);
     }
   }, [userData]);
@@ -66,8 +57,7 @@ const Filter = ({ userData }: FilterProp) => {
       alert("Please select both a field and a value before filtering.");
       return;
     }
-
-    isFilter.current = true;
+    setIsFilter(true)
     const key = fieldMap[selectedField];
     const filterVal = key === "age" ? Number(selectedValue) : selectedValue;
     const result = userData.filter((user) => user[key] === filterVal);
@@ -75,7 +65,7 @@ const Filter = ({ userData }: FilterProp) => {
   };
 
   const handleAll = () => {
-    isFilter.current = false;
+    setIsFilter(false)
     setFilteredData(userData);
     setSelectedField(null);
     setSelectedValue("");
@@ -115,7 +105,7 @@ const Filter = ({ userData }: FilterProp) => {
       <button onClick={handleFilter}>Filter</button>
       <button onClick={handleAll}>All</button>
       <hr />
-      <Table userData={isFilter.current ? filteredData : userData} />
+      <Table userData={isFilter ? filteredData : userData} />
     </>
   );
 };
