@@ -8,10 +8,8 @@ const selectFieldOptions: SelectFieldOptions[] = ["Name", "Age", "City"];
 const Filter = ({ userData }: FilterProp) => {
   console.log("Filter component rendering....");
 
-  const [selectedField, setSelectedField] = useState<SelectFieldOptions | null>(
-    null,
-  );
-  const [selectedValue, setSelectedValue] = useState<string | null>(null);
+  const [selectedField, setSelectedField] = useState<string>("select-field");
+  const [selectedValue, setSelectedValue] = useState<string | null>("select-value");
   const [filteredData, setFilteredData] = useState<userType[]>(userData);
   const isFilter = useRef<boolean>(false);
 
@@ -19,10 +17,9 @@ const Filter = ({ userData }: FilterProp) => {
     const value = e.target.value;
 
     if (value === "select-field") {
-      setSelectedField(null);
       return;
     } else {
-      setSelectedField(value as SelectFieldOptions);
+      setSelectedField(value);
     }
   };
 
