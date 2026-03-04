@@ -6,13 +6,11 @@ import { store } from '../redux/store'
 
 const ReduxPage = () => {
   return (
-    <>
-    <h1>Redux</h1>
     <Provider store={store}>
-      <ReduxUser/>
-      <ReduxFilter/>
-      </Provider>
-    </>
+      <h1>Redux</h1>
+      <ReduxUser />
+      <ReduxFilter />
+    </Provider>
   )
 }
 

@@ -1,6 +1,9 @@
 import { useDispatch, useSelector } from "react-redux";
+import type { RootState } from "../redux/store";
 import type { SelectFieldOptions } from "../Types/userType";
-import { useState } from "react";
+import { filterUser as filterUserAction } from "../redux/userSlice";
+import { useState, useMemo } from "react";
+import Table from "./Table";
 
 const selectFieldOptions: SelectFieldOptions[] = ["Name", "Age", "City"];
 
@@ -15,8 +18,12 @@ const ReduxFilter = () => {
     null,
   );
   const [selectedValue, setSelectedValue] = useState<string>("");
+
   const dispatch = useDispatch();
-  const filterUser = useSelector((state) => state.user.filterUser);
+  const userData = useSelector((state: RootState) => state.user.userData);
+  const appliedFilter = useSelector(
+    (state: RootState) => state.user.appliedFilter,
+  );
 
   const handleFieldChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value;
@@ -28,27 +35,39 @@ const ReduxFilter = () => {
     setSelectedValue("");
   };
 
-  
-    const handleUniqueChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-      setSelectedValue(e.target.value);
-    };
-  
-   
+  const uniqueValues = useMemo((): (string | number)[] => {
+    if (!selectedField) return [];
+    const key = fieldMap[selectedField];
+    const values = userData.map((user): string | number => user[key]);
+    return Array.from(new Set(values));
+  }, [selectedField, userData]);
+
+  const handleUniqueChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedValue(e.target.value);
+  };
+
+  const displayData = useMemo(() => {
+    if (!appliedFilter) return userData;
+    const key = fieldMap[appliedFilter.field];
+    const filterVal =
+      key === "age" ? Number(appliedFilter.value) : appliedFilter.value;
+    return userData.filter((user) => user[key] === filterVal);
+  }, [userData, appliedFilter]);
 
   const handleFilter = () => {
     if (!selectedField || !selectedValue) {
       alert("Please select both a field and value.");
       return;
     }
-    dispatch(filterUser({ selectedField, selectedValue }));
+    dispatch(filterUserAction({ selectedField, selectedValue }));
   };
 
+  const handleAll = () => {
+    dispatch(filterUserAction(null));
+    setSelectedField(null);
+    setSelectedValue("");
+  };
 
-  const handleAll = ()=> {
-    dispatch(filterUser(null))
-    setSelectedField(null)
-    setSelectedValue("")
-  }
   return (
     <>
       <h1>Filters</h1>
