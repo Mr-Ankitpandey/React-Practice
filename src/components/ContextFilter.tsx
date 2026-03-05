@@ -2,8 +2,8 @@ import { useContext, useMemo, useState } from "react";
 import type { SelectFieldOptions } from "../Types/userType";
 import Table from "./Table";
 import { UserContext } from "../context/context";
-import { displayDataHelper } from "../helpers/displayDataHelper";
-import { uniqueValuesHelper } from "../helpers/uniqueValuesHelper";
+import { displayDataHelper } from "../utils/displayDataHelper";
+import { uniqueValuesHelper } from "../utils/uniqueValuesHelper";
 
 const selectFieldOptions: SelectFieldOptions[] = ["Name", "Age", "City"];
 

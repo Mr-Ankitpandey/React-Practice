@@ -1,7 +1,7 @@
 import { useState } from "react";
 import type { userType } from "../Types/userType";
-import { idChangeHelper } from "../helpers/idChangeHelper";
-import { newUser } from "../helpers/newUserHelper";
+import { idChangeHelper } from "../utils/idChangeHelper";
+import { newUser } from "../utils/newUserHelper";
 type UserProp = {
   passUserData: (user: userType, isUpdate?: boolean) => void;
   userData: userType[];

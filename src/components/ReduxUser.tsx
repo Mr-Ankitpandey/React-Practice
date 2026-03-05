@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addUser, deleteUser, updateUser } from "../redux/userSlice";
 import type { RootState } from "../redux/store";
-import { idChangeHelper } from "../helpers/idChangeHelper";
+import { idChangeHelper } from "../utils/idChangeHelper";
 
 const ReduxUser = () => {
   const [selectedId, setSelectedId] = useState<number | null>(null);

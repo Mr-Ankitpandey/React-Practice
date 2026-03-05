@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
 import { UserContext } from "../context/context";
-import { newUser } from "../helpers/newUserHelper";
-import { idChangeHelper } from "../helpers/idChangeHelper";
+import { newUser } from "../utils/newUserHelper";
+import { idChangeHelper } from "../utils/idChangeHelper";
 
 const ContextUser = () => {
   const { userData, addUser, updateUser, deleteUser } = useContext(UserContext);

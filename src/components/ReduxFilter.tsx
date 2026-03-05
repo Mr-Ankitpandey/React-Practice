@@ -4,8 +4,8 @@ import type { SelectFieldOptions } from "../Types/userType";
 import { allUser, filterUser } from "../redux/userSlice";
 import { useState, useMemo } from "react";
 import Table from "./Table";
-import { displayDataHelper } from "../helpers/displayDataHelper";
-import { uniqueValuesHelper } from "../helpers/uniqueValuesHelper";
+import { displayDataHelper } from "../utils/displayDataHelper";
+import { uniqueValuesHelper } from "../utils/uniqueValuesHelper";
 
 const selectFieldOptions: SelectFieldOptions[] = ["Name", "Age", "City"];
 

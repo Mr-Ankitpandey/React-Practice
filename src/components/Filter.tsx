@@ -1,8 +1,8 @@
 import { useMemo, useState } from "react";
 import type { SelectFieldOptions, userType } from "../Types/userType";
 import Table from "./Table";
-import { uniqueValuesHelper } from "../helpers/uniqueValuesHelper";
-import { displayDataHelper } from "../helpers/displayDataHelper";
+import { uniqueValuesHelper } from "../utils/uniqueValuesHelper";
+import { displayDataHelper } from "../utils/displayDataHelper";
 
 type FilterProp = {
   userData: userType[];
