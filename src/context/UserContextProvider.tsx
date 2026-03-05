@@ -65,7 +65,7 @@ const reducerFn = (state:reducerStateType, action:reducerActionType) => {
   }
 };
 
-export const UserProvider = ({ children }: { children: React.ReactNode }) => {
+export const UserContextProvider = ({ children }: { children: React.ReactNode }) => {
   const initialState = {
     userData: [],
     appliedFilter: null,

@@ -1,14 +1,14 @@
-import { UserProvider } from "../context/UserContext";
+import { UserContextProvider } from "../context/UserContextprovider";
 import ContextUser from "../components/ContextUser";
 import ContextFilter from "../components/ContextFilter";
 
 const ContextPage = () => {
   return (
-    <UserProvider>
+    <UserContextProvider>
       <h1>Context Page</h1>
       <ContextUser />
       <ContextFilter />
-    </UserProvider>
+    </UserContextProvider>
   );
 };
 
