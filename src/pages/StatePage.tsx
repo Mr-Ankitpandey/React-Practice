@@ -15,7 +15,7 @@ const StatePage = () => {
       setUserData((prevUsers) => [
         ...prevUsers,
         {
-          id: Number(new Date()),
+          id: user?.id,
           name: user?.name.trim(),
           city: user?.city.trim(),
           age: Number(user?.age),

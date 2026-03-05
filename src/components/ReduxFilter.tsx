@@ -1,8 +1,9 @@
 import { useDispatch, useSelector } from "react-redux";
+import type { RootState } from "../redux/store";
 import type { SelectFieldOptions } from "../Types/userType";
-import { useMemo, useState } from "react";
+import { allUser, filterUser } from "../redux/userSlice";
+import { useState, useMemo } from "react";
 import Table from "./Table";
-import { filterUser } from "../redux/userSlice";
 
 const selectFieldOptions: SelectFieldOptions[] = ["Name", "Age", "City"];
 
@@ -17,10 +18,12 @@ const ReduxFilter = () => {
     null,
   );
   const [selectedValue, setSelectedValue] = useState<string>("");
+
   const dispatch = useDispatch();
-  const userData = useSelector((state) => state.user.userData);
-  const appliedFilter = useSelector((state) => state.user.appliedFilter);
-  
+  const userData = useSelector((state: RootState) => state.user.userData);
+  const appliedFilter = useSelector(
+    (state: RootState) => state.user.appliedFilter,
+  );
 
   const handleFieldChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value;
@@ -32,31 +35,22 @@ const ReduxFilter = () => {
     setSelectedValue("");
   };
 
+  const uniqueValues = useMemo((): (string | number)[] => {
+    if (!selectedField) return [];
+    const key = fieldMap[selectedField];
+    const values = userData.map((user): string | number => user[key]);
+    return Array.from(new Set(values));
+  }, [selectedField, userData]);
+
   const handleUniqueChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedValue(e.target.value);
   };
 
-  const uniqueValues = useMemo((): (string | number | undefined)[] => {
-    if (!selectedField) return [];
-    const key = fieldMap[selectedField];
-    const values = userData.map((user) => user[key]);
-    const lowerCaseValues = values.map((value) => {
-      if (typeof value === "number") return value;
-      if (typeof value === "string") {
-        return value.toLowerCase();
-      }
-    });
-
-    return [...new Set(lowerCaseValues)];
-  }, [selectedField, userData]);
-
   const displayData = useMemo(() => {
     if (!appliedFilter) return userData;
-
     const key = fieldMap[appliedFilter.field];
     const filterVal =
       key === "age" ? Number(appliedFilter.value) : appliedFilter.value;
-
     return userData.filter((user) => user[key] === filterVal);
   }, [userData, appliedFilter]);
 
@@ -69,10 +63,11 @@ const ReduxFilter = () => {
   };
 
   const handleAll = () => {
-    dispatch(filterUser(null));
+    dispatch(allUser());
     setSelectedField(null);
     setSelectedValue("");
   };
+
   return (
     <>
       <h1>Filters</h1>

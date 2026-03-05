@@ -1,7 +1,7 @@
 import { useContext, useMemo, useState } from "react";
 import type { SelectFieldOptions } from "../Types/userType";
 import Table from "./Table";
-import { UserContext } from "../context/UserContext";
+import { UserContext } from "../context/context";
 
 const selectFieldOptions: SelectFieldOptions[] = ["Name", "Age", "City"];
 
@@ -12,7 +12,7 @@ const fieldMap = {
 } as const;
 
 const ContextFilter = () => {
-  const { userData, appliedFilter, filterUser } = useContext(UserContext)!;
+  const { userData, appliedFilter, filterUser, allUser } = useContext(UserContext)!;
 
   const [selectedField, setSelectedField] = useState<SelectFieldOptions | null>(
     null,
@@ -67,7 +67,7 @@ const ContextFilter = () => {
   };
 
   const handleAll = () => {
-    filterUser(null)
+    allUser()
     setSelectedField(null);
     setSelectedValue("");
   };

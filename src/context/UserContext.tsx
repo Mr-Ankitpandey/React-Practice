@@ -1,15 +1,7 @@
-import { createContext, useState } from "react";
+import {useState } from "react";
 import type { filters, SelectFieldOptions, UserContextType, userType } from "../Types/userType";
+import { UserContext } from "./context";
 
-
-export const UserContext = createContext<UserContextType>({
-  userData : [],
-  addUser : ()=> {},
-  updateUser : ()=> {},
-  deleteUser : ()=> {},
-  filterUser : ()=> {},
-  appliedFilter : null,
-})
 export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   const [userData, setUserData] = useState<userType[]>([]);
    const [appliedFilter, setAppliedFilter] = useState<{
@@ -21,7 +13,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     setUserData((prev) => [
       ...prev,
       {
-        id: Number(new Date()),
+        id: user?.id,
         name: user?.name.trim(),
         city: user?.city.trim(),
         age: Number(user?.age),
@@ -30,7 +22,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const updateUser = (updatedUser: userType) => {
-    setUserData((prevUsers) => prevUsers.map((u) => (u.id === updatedUser.id ? updatedUser : u)));
+    setUserData((prevUsers) => prevUsers?.map((u) => (u.id === updatedUser?.id ? updatedUser : u)));
   };
 
   const deleteUser = (selectedId: number) => {
@@ -47,6 +39,9 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
       value: chosenfilter?.selectedValue,
     });
   }
+  const allUser = ()=> {
+    setAppliedFilter(null)
+  }
 
   const ctxValue: UserContextType = {
     userData,
@@ -54,6 +49,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     updateUser,
     deleteUser,
     filterUser,
+    allUser,
     appliedFilter
   }
 

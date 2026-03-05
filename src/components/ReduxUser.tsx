@@ -1,13 +1,14 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addUser, deleteUser, updateUser } from "../redux/userSlice";
+import type { RootState } from "../redux/store";
 
 const ReduxUser = () => {
   const [selectedId, setSelectedId] = useState<number | null>(null);
   const [formData, setFormData] = useState({ name: "", city: "", age: "" });
 
   const dispatch = useDispatch();
-  const userData = useSelector((state) => state.user?.userData);
+  const userData = useSelector((state: RootState) => state.user.userData);
 
   const handleFormAction = (fd: FormData) => {
     const user = Object.fromEntries(fd);
@@ -15,7 +16,6 @@ const ReduxUser = () => {
 
     setFormData({ name: "", city: "", age: "" });
   };
-  console.log(userData);
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));

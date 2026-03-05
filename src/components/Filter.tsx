@@ -25,7 +25,7 @@ const Filter = ({ userData }: FilterProp) => {
   } | null>(null);
 
   const handleFieldChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const value = e.target.value;
+    const value = e.target?.value;
     if (value === "select-field") {
       setSelectedField(null);
     } else {
@@ -34,15 +34,14 @@ const Filter = ({ userData }: FilterProp) => {
     setSelectedValue("");
   };
 
-
   const uniqueValues = useMemo((): (string | number | undefined)[] => {
     if (!selectedField) return [];
     const key = fieldMap[selectedField];
-    const values = userData.map((user) => user[key]);
-    const lowerCaseValues = values.map((value) => {
+    const values = userData?.map((user) => user[key]);
+    const lowerCaseValues = values?.map((value) => {
       if (typeof value === "number") return value;
       if (typeof value === "string") {
-        return value.toLowerCase();
+        return value?.toLowerCase();
       }
     });
 
@@ -50,17 +49,17 @@ const Filter = ({ userData }: FilterProp) => {
   }, [selectedField, userData]);
 
   const handleUniqueChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedValue(e.target.value);
+    setSelectedValue(e.target?.value);
   };
 
    const displayData = useMemo(() => {
       if (!appliedFilter) return userData;
   
-      const key = fieldMap[appliedFilter.field];
+      const key = fieldMap[appliedFilter?.field];
       const filterVal =
-          key === "age" ? Number(appliedFilter.value) : appliedFilter.value
+          key === "age" ? Number(appliedFilter?.value) : appliedFilter?.value
   
-      return  userData.filter((user) => user[key] === filterVal);
+      return  userData?.filter((user) => user[key] === filterVal);
       
   }, [userData, appliedFilter]);
 
@@ -91,7 +90,7 @@ const Filter = ({ userData }: FilterProp) => {
         onChange={handleFieldChange}
       >
         <option value="select-field">Select Field</option>
-        {selectFieldOptions.map((field) => (
+        {selectFieldOptions?.map((field) => (
           <option key={field} value={field}>
             {field}
           </option>
@@ -105,7 +104,7 @@ const Filter = ({ userData }: FilterProp) => {
         onChange={handleUniqueChange}
       >
         <option value="">Select Value</option>
-        {uniqueValues.map((value) => (
+        {uniqueValues?.map((value) => (
           <option key={value} value={value}>
             {value}
           </option>

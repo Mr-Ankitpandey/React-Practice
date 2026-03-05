@@ -3,8 +3,7 @@ import type { userType } from "../Types/userType";
 type UserProp = {
   passUserData: (user: userType, isUpdate?: boolean) => void;
   userData: userType[];
-  setUserData: React.Dispatch<React.SetStateAction<userType[]>>
-
+  setUserData: React.Dispatch<React.SetStateAction<userType[]>>;
 };
 
 const User = ({ passUserData, userData, setUserData }: UserProp) => {
@@ -16,7 +15,12 @@ const User = ({ passUserData, userData, setUserData }: UserProp) => {
   });
 
   const handleFormAction = (fd: FormData) => {
-    const user = Object.fromEntries(fd);
+    const user: userType = {
+      id: Number(new Date()),
+      name: (fd.get("name") as string),
+      city: (fd.get("city") as string) ,
+      age: (fd.get("age") as string),
+    };
     passUserData(user);
     setFormData({ name: "", city: "", age: "" });
   };
@@ -45,7 +49,7 @@ const User = ({ passUserData, userData, setUserData }: UserProp) => {
       setFormData({
         name: selectedUser.name,
         city: selectedUser.city,
-        age: (String(selectedUser.age)),
+        age: String(selectedUser.age),
       });
     }
   };
@@ -68,7 +72,7 @@ const User = ({ passUserData, userData, setUserData }: UserProp) => {
       prevUsers.filter((user) => user.id !== selectedId),
     );
     setFormData({ name: "", city: "", age: "" });
-    setSelectedId(null)
+    setSelectedId(null);
   };
 
   return (

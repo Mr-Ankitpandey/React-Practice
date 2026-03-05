@@ -1,5 +1,6 @@
 import { useContext, useState } from "react";
-import { UserContext } from "../context/UserContext";
+import { UserContext } from "../context/context";
+import type { userType } from "../Types/userType";
 
 const ContextUser = () => {
   const { userData, addUser, updateUser, deleteUser } = useContext(UserContext);
@@ -8,8 +9,13 @@ const ContextUser = () => {
   const [formData, setFormData] = useState({ name: "", city: "", age: "" });
 
   const handleFormAction = (fd: FormData) => {
-    const user = Object.fromEntries(fd);
-    addUser(user);
+      const user: userType = {
+          id: Number(new Date()),
+          name: (fd.get("name") as string),
+          city: (fd.get("city") as string) ,
+          age: (fd.get("age") as string),
+        };
+      addUser(user);
     setFormData({ name: "", city: "", age: "" });
   };
 

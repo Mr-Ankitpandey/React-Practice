@@ -1,7 +1,7 @@
 export interface userType {
     id: number,
     name: string,
-    age: number,
+    age: string | number,
     city: string
 }
 
@@ -18,6 +18,7 @@ export interface UserContextType {
   updateUser: (user: userType) => void;
   deleteUser: (id: number) => void;
   filterUser : (obj: filters | null) => void;
+  allUser : ()=>void;
   appliedFilter : {
     field: SelectFieldOptions;
     value: string;
