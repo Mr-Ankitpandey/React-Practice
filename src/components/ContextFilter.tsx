@@ -2,14 +2,10 @@ import { useContext, useMemo, useState } from "react";
 import type { SelectFieldOptions } from "../Types/userType";
 import Table from "./Table";
 import { UserContext } from "../context/context";
+import { displayDataHelper } from "../helpers/displayDataHelper";
+import { uniqueValuesHelper } from "../helpers/uniqueValuesHelper";
 
 const selectFieldOptions: SelectFieldOptions[] = ["Name", "Age", "City"];
-
-const fieldMap = {
-  Name: "name",
-  Age: "age",
-  City: "city",
-} as const;
 
 const ContextFilter = () => {
   const { userData, appliedFilter, filterUser, allUser } =
@@ -30,36 +26,17 @@ const ContextFilter = () => {
     setSelectedValue("");
   };
 
-  const uniqueValues = useMemo((): (string | number | undefined)[] => {
-    if (!selectedField) return [];
-    const key = fieldMap[selectedField];
-    const values = userData?.map((user) => user[key]);
-    const lowerCaseValues = values?.map((value) => {
-      if (typeof value === "number") return value;
-      if (typeof value === "string") {
-        return value?.toLowerCase();
-      }
-    });
-
-    return [...new Set(lowerCaseValues)];
-  }, [selectedField, userData]);
+   const uniqueValues = useMemo((): (string | number | undefined)[] => {
+      return uniqueValuesHelper({selectedField, userData})
+    }, [selectedField, userData]);
 
   const handleUniqueChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedValue(e.target?.value);
   };
 
-  const displayData = useMemo(() => {
-    if (!appliedFilter) return userData;
-    const key = fieldMap[appliedFilter?.field];
-    const filterVal =
-      key === "age" ? Number(appliedFilter?.value) : appliedFilter?.value;
-
-    return userData?.filter((user) => {
-      return typeof user[key] === "string" && typeof filterVal === "string"
-        ? user[key]?.toLowerCase() === filterVal?.toLowerCase()
-        : user[key] === filterVal;
-    });
-  }, [userData, appliedFilter]);
+   const displayData = useMemo(() => {
+      return displayDataHelper({appliedFilter, userData})
+    }, [userData, appliedFilter]);
 
   const handleFilter = () => {
     if (!selectedField || !selectedValue) {

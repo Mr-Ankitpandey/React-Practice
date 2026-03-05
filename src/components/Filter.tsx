@@ -1,18 +1,14 @@
 import { useMemo, useState } from "react";
 import type { SelectFieldOptions, userType } from "../Types/userType";
 import Table from "./Table";
+import { uniqueValuesHelper } from "../helpers/uniqueValuesHelper";
+import { displayDataHelper } from "../helpers/displayDataHelper";
 
 type FilterProp = {
   userData: userType[];
 };
 
 const selectFieldOptions: SelectFieldOptions[] = ["Name", "Age", "City"];
-
-const fieldMap = {
-  Name: "name",
-  Age: "age",
-  City: "city",
-} as const;
 
 const Filter = ({ userData }: FilterProp) => {
   const [selectedField, setSelectedField] = useState<SelectFieldOptions | null>(
@@ -34,36 +30,17 @@ const Filter = ({ userData }: FilterProp) => {
     setSelectedValue("");
   };
 
-  const uniqueValues = useMemo((): (string | number | undefined)[] => {
-    if (!selectedField) return [];
-    const key = fieldMap[selectedField];
-    const values = userData?.map((user) => user[key]);
-    const lowerCaseValues = values?.map((value) => {
-      if (typeof value === "number") return value;
-      if (typeof value === "string") {
-        return value?.toLowerCase();
-      }
-    });
-
-    return [...new Set(lowerCaseValues)];
-  }, [selectedField, userData]);
+   const uniqueValues = useMemo((): (string | number | undefined)[] => {
+     return uniqueValuesHelper({selectedField, userData})
+   }, [selectedField, userData]);
 
   const handleUniqueChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedValue(e.target?.value);
   };
 
   const displayData = useMemo(() => {
-    if (!appliedFilter) return userData;
-    const key = fieldMap[appliedFilter?.field];
-    const filterVal =
-      key === "age" ? Number(appliedFilter?.value) : appliedFilter?.value;
-
-    return userData?.filter((user) => {
-      return typeof user[key] === "string" && typeof filterVal === "string"
-        ? user[key]?.toLowerCase() === filterVal?.toLowerCase()
-        : user[key] === filterVal;
-    });
-  }, [userData, appliedFilter]);
+     return displayDataHelper({appliedFilter, userData})
+   }, [userData, appliedFilter]);
 
   const handleFilter = () => {
     if (!selectedField || !selectedValue) {

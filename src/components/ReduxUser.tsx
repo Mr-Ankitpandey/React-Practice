@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addUser, deleteUser, updateUser } from "../redux/userSlice";
 import type { RootState } from "../redux/store";
+import { idChangeHelper } from "../helpers/idChangeHelper";
 
 const ReduxUser = () => {
   const [selectedId, setSelectedId] = useState<number | null>(null);
@@ -21,24 +22,9 @@ const ReduxUser = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleIdChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const value = e.target?.value;
-    if (value === "select-id") {
-      setSelectedId(null);
-      setFormData({ name: "", city: "", age: "" });
-      return;
-    }
-    const id = Number(value);
-    setSelectedId(id);
-    const selectedUser = userData?.find((user) => user?.id === id);
-    if (selectedUser) {
-      setFormData({
-        name: selectedUser?.name,
-        city: selectedUser?.city,
-        age: String(selectedUser?.age),
-      });
-    }
-  };
+   const handleIdChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+      idChangeHelper({e,setSelectedId, setFormData,  userData})
+    };
 
   const handleUpdate = () => {
     dispatch(

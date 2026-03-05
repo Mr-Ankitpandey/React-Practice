@@ -4,13 +4,28 @@ const MainNavbar = () => {
   return (
     <ul className="list-items">
       <li>
-        <NavLink to="state" className={({isActive}) => isActive ? 'active': undefined}>State</NavLink>
+        <NavLink
+          to="state"
+          className={({ isActive }) => (isActive ? "active" : undefined)}
+        >
+          State
+        </NavLink>
       </li>
       <li>
-        <NavLink to="context" className={({isActive}) => isActive ? 'active': undefined}>Context</NavLink>
+        <NavLink
+          to="context"
+          className={({ isActive }) => (isActive ? "active" : undefined)}
+        >
+          Context
+        </NavLink>
       </li>
       <li>
-        <NavLink to="rtk" className={({isActive})=> isActive ? 'active': undefined}>Redux Toolkit</NavLink>
+        <NavLink
+          to="rtk"
+          className={({ isActive }) => (isActive ? "active" : undefined)}
+        >
+          Redux Toolkit
+        </NavLink>
       </li>
     </ul>
   );

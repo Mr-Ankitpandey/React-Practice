@@ -4,14 +4,10 @@ import type { SelectFieldOptions } from "../Types/userType";
 import { allUser, filterUser } from "../redux/userSlice";
 import { useState, useMemo } from "react";
 import Table from "./Table";
+import { displayDataHelper } from "../helpers/displayDataHelper";
+import { uniqueValuesHelper } from "../helpers/uniqueValuesHelper";
 
 const selectFieldOptions: SelectFieldOptions[] = ["Name", "Age", "City"];
-
-const fieldMap = {
-  Name: "name",
-  Age: "age",
-  City: "city",
-} as const;
 
 const ReduxFilter = () => {
   const [selectedField, setSelectedField] = useState<SelectFieldOptions | null>(
@@ -40,30 +36,11 @@ const ReduxFilter = () => {
   };
 
   const uniqueValues = useMemo((): (string | number | undefined)[] => {
-    if (!selectedField) return [];
-    const key = fieldMap[selectedField];
-    const values = userData?.map((user) => user[key]);
-    const lowerCaseValues = values?.map((value) => {
-      if (typeof value === "number") return value;
-      if (typeof value === "string") {
-        return value?.toLowerCase();
-      }
-    });
-
-    return [...new Set(lowerCaseValues)];
+    return uniqueValuesHelper({ selectedField, userData });
   }, [selectedField, userData]);
 
   const displayData = useMemo(() => {
-    if (!appliedFilter) return userData;
-    const key = fieldMap[appliedFilter?.field];
-    const filterVal =
-      key === "age" ? Number(appliedFilter?.value) : appliedFilter?.value;
-
-    return userData?.filter((user) => {
-      return typeof user[key] === "string" && typeof filterVal === "string"
-        ? user[key]?.toLowerCase() === filterVal?.toLowerCase()
-        : user[key] === filterVal;
-    });
+    return displayDataHelper({ appliedFilter, userData });
   }, [userData, appliedFilter]);
 
   const handleFilter = () => {

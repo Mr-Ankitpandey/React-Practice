@@ -1,6 +1,7 @@
 import { useContext, useState } from "react";
 import { UserContext } from "../context/context";
-import type { userType } from "../Types/userType";
+import { newUser } from "../helpers/newUserHelper";
+import { idChangeHelper } from "../helpers/idChangeHelper";
 
 const ContextUser = () => {
   const { userData, addUser, updateUser, deleteUser } = useContext(UserContext);
@@ -9,13 +10,8 @@ const ContextUser = () => {
   const [formData, setFormData] = useState({ name: "", city: "", age: "" });
 
   const handleFormAction = (fd: FormData) => {
-      const user: userType = {
-          id: Number(new Date()),
-          name: (fd.get("name") as string),
-          city: (fd.get("city") as string) ,
-          age: (fd.get("age") as string),
-        };
-      addUser(user);
+    const user = newUser(fd);
+    addUser(user);
     setFormData({ name: "", city: "", age: "" });
   };
 
@@ -25,22 +21,7 @@ const ContextUser = () => {
   };
 
   const handleIdChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const value = e.target?.value;
-    if (value === "select-id") {
-      setSelectedId(null);
-      setFormData({ name: "", city: "", age: "" });
-      return;
-    }
-    const id = Number(value);
-    setSelectedId(id);
-    const selectedUser = userData?.find((user) => user?.id === id);
-    if (selectedUser) {
-      setFormData({
-        name: selectedUser?.name,
-        city: selectedUser?.city,
-        age: String(selectedUser?.age),
-      });
-    }
+    idChangeHelper({e,setSelectedId, setFormData,  userData})
   };
 
   const handleUpdate = () => {

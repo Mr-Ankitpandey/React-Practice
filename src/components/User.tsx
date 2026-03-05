@@ -1,5 +1,7 @@
 import { useState } from "react";
 import type { userType } from "../Types/userType";
+import { idChangeHelper } from "../helpers/idChangeHelper";
+import { newUser } from "../helpers/newUserHelper";
 type UserProp = {
   passUserData: (user: userType, isUpdate?: boolean) => void;
   userData: userType[];
@@ -15,12 +17,7 @@ const User = ({ passUserData, userData, setUserData }: UserProp) => {
   });
 
   const handleFormAction = (fd: FormData) => {
-    const user: userType = {
-      id: Number(new Date()),
-      name: (fd?.get("name") as string),
-      city: (fd?.get("city") as string) ,
-      age: (fd?.get("age") as string),
-    };
+    const user = newUser(fd)
     passUserData(user);
     setFormData({ name: "", city: "", age: "" });
   };
@@ -33,26 +30,9 @@ const User = ({ passUserData, userData, setUserData }: UserProp) => {
     }));
   };
 
-  const handleIdChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const value = e.target?.value;
-
-    if (value === "select-id") {
-      setSelectedId(null);
-      setFormData({ name: "", city: "", age: "" });
-      return;
-    }
-    const id = Number(value);
-    setSelectedId(id);
-    const selectedUser = userData?.find((user) => user?.id === id);
-
-    if (selectedUser) {
-      setFormData({
-        name: selectedUser?.name,
-        city: selectedUser?.city,
-        age: String(selectedUser?.age),
-      });
-    }
-  };
+   const handleIdChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+      idChangeHelper({e,setSelectedId, setFormData,  userData})
+    };
 
   const handleUpdate = () => {
     if (!selectedId) return;
