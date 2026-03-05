@@ -1,8 +1,18 @@
-import { createSlice } from "@reduxjs/toolkit";
-import type { userType } from "../Types/userType";
 
-const initialState : {userData : userType[]} = {
+import { createSlice } from "@reduxjs/toolkit";
+import type { SelectFieldOptions, userType } from "../Types/userType";
+
+type initialStateType = {
+    userData : userType[],
+    appliedFilter : {
+        field: SelectFieldOptions;
+        value: string;
+      } | null
+}
+
+const initialState : initialStateType = {
     userData: [],
+    appliedFilter : null
 }
 
 const userSlice = createSlice({
@@ -26,7 +36,10 @@ const userSlice = createSlice({
             state.userData = state.userData.filter((user)=> user?.id !== action.payload)
         },
         filterUser : (state, action)=> {
-
+            state.appliedFilter = {
+                field : action.payload?.selectedField,
+                value : action.payload?.selectedValue
+            }
         }
     }
 })

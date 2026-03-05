@@ -1,5 +1,4 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import type { SelectFieldOptions, userType } from "../Types/userType";
 import Table from "./Table";
 
@@ -16,10 +15,14 @@ const fieldMap = {
 } as const;
 
 const Filter = ({ userData }: FilterProp) => {
-  const [selectedField, setSelectedField] = useState<SelectFieldOptions | null>(null);
+  const [selectedField, setSelectedField] = useState<SelectFieldOptions | null>(
+    null,
+  );
   const [selectedValue, setSelectedValue] = useState<string>("");
-  const [filteredData, setFilteredData] = useState<userType[]>(userData);
-  const [isFilter, setIsFilter] = useState<boolean>(false)
+  const [appliedFilter, setAppliedFilter] = useState<{
+    field: SelectFieldOptions;
+    value: string;
+  } | null>(null);
 
   const handleFieldChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value;
@@ -31,42 +34,49 @@ const Filter = ({ userData }: FilterProp) => {
     setSelectedValue("");
   };
 
-  const uniqueValues = useMemo((): (string | number)[] => {
+
+  const uniqueValues = useMemo((): (string | number | undefined)[] => {
     if (!selectedField) return [];
     const key = fieldMap[selectedField];
     const values = userData.map((user) => user[key]);
-    return [...new Set(values)];
+    const lowerCaseValues = values.map((value) => {
+      if (typeof value === "number") return value;
+      if (typeof value === "string") {
+        return value.toLowerCase();
+      }
+    });
+
+    return [...new Set(lowerCaseValues)];
   }, [selectedField, userData]);
 
   const handleUniqueChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedValue(e.target.value);
   };
 
-  useEffect(() => {
-    if (isFilter && selectedField && selectedValue) {
-      const key = fieldMap[selectedField];
-      const filterVal = key === "age" ? Number(selectedValue) : selectedValue;
-      setFilteredData(userData.filter((user) => user[key] === filterVal));
-    } else if (!isFilter) {
-      setFilteredData(userData);
-    }
-  }, [userData]);
+   const displayData = useMemo(() => {
+      if (!appliedFilter) return userData;
+  
+      const key = fieldMap[appliedFilter.field];
+      const filterVal =
+          key === "age" ? Number(appliedFilter.value) : appliedFilter.value
+  
+      return  userData.filter((user) => user[key] === filterVal);
+      
+  }, [userData, appliedFilter]);
 
   const handleFilter = () => {
     if (!selectedField || !selectedValue) {
       alert("Please select both a field and a value before filtering.");
       return;
     }
-    setIsFilter(true)
-    const key = fieldMap[selectedField];
-    const filterVal = key === "age" ? Number(selectedValue) : selectedValue;
-    const result = userData.filter((user) => user[key] === filterVal);
-    setFilteredData(result);
+    setAppliedFilter({
+      field : selectedField,
+      value : selectedValue
+    })
   };
 
   const handleAll = () => {
-    setIsFilter(false)
-    setFilteredData(userData);
+    setAppliedFilter(null)
     setSelectedField(null);
     setSelectedValue("");
   };
@@ -105,7 +115,7 @@ const Filter = ({ userData }: FilterProp) => {
       <button onClick={handleFilter}>Filter</button>
       <button onClick={handleAll}>All</button>
       <hr />
-      <Table userData={isFilter ? filteredData : userData} />
+      <Table userData={displayData} />
     </>
   );
 };

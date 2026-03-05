@@ -29,11 +29,18 @@ const ContextFilter = () => {
     setSelectedValue("");
   };
 
-  const uniqueValues = useMemo((): (string | number)[] => {
+  const uniqueValues = useMemo((): (string | number | undefined)[] => {
     if (!selectedField) return [];
     const key = fieldMap[selectedField];
     const values = userData.map((user) => user[key]);
-    return [...new Set(values)];
+    const loweCaseValues = values.map((value)=>{
+      if(typeof value === 'number') return value
+      if(typeof value === 'string'){
+        return value.toLowerCase();
+      }
+    })
+    
+    return [...new Set(loweCaseValues)];
   }, [selectedField, userData]);
 
   const handleUniqueChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -45,9 +52,10 @@ const ContextFilter = () => {
 
     const key = fieldMap[appliedFilter.field];
     const filterVal =
-        key === "age" ? Number(appliedFilter.value) : appliedFilter.value;
+        key === "age" ? Number(appliedFilter.value) : appliedFilter.value
 
-    return userData.filter((user) => user[key] === filterVal);
+    return  userData.filter((user) => user[key] === filterVal);
+    
 }, [userData, appliedFilter]);
 
   const handleFilter = () => {
