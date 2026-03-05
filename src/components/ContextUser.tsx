@@ -25,7 +25,7 @@ const ContextUser = () => {
   };
 
   const handleIdChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const value = e.target.value;
+    const value = e.target?.value;
     if (value === "select-id") {
       setSelectedId(null);
       setFormData({ name: "", city: "", age: "" });
@@ -33,12 +33,12 @@ const ContextUser = () => {
     }
     const id = Number(value);
     setSelectedId(id);
-    const selectedUser = userData.find((user) => user?.id === id);
+    const selectedUser = userData?.find((user) => user?.id === id);
     if (selectedUser) {
       setFormData({
-        name: selectedUser.name,
-        city: selectedUser.city,
-        age: String(selectedUser.age),
+        name: selectedUser?.name,
+        city: selectedUser?.city,
+        age: String(selectedUser?.age),
       });
     }
   };
@@ -46,9 +46,9 @@ const ContextUser = () => {
   const handleUpdate = () => {
     updateUser({
       id: selectedId as number,
-      name: formData.name.trim(),
-      city: formData.city.trim(),
-      age: Number(formData.age),
+      name: formData.name?.trim(),
+      city: formData.city?.trim(),
+      age: Number(formData?.age),
     });
   };
 
@@ -68,7 +68,7 @@ const ContextUser = () => {
           type="text"
           name="name"
           required
-          value={formData.name}
+          value={formData?.name}
           onChange={handleInputChange}
         />
         <br /> <br />
@@ -78,7 +78,7 @@ const ContextUser = () => {
           type="text"
           name="city"
           required
-          value={formData.city}
+          value={formData?.city}
           onChange={handleInputChange}
         />
         <br /> <br />
@@ -88,7 +88,7 @@ const ContextUser = () => {
           type="number"
           name="age"
           required
-          value={formData.age}
+          value={formData?.age}
           onChange={handleInputChange}
         />
         <br /> <br />
@@ -113,9 +113,9 @@ const ContextUser = () => {
         value={selectedId ?? "select-id"}
       >
         <option value="select-id">Select ID</option>
-        {userData.map((user) => (
-          <option key={user.id} value={user.id}>
-            {user.id}
+        {userData?.map((user) => (
+          <option key={user?.id} value={user?.id}>
+            {user?.id}
           </option>
         ))}
       </select>

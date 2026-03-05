@@ -24,3 +24,18 @@ export interface UserContextType {
     value: string;
   } | null
 }
+
+export type reducerStateType = {
+  userData : userType[],
+  appliedFilter :{
+    field: SelectFieldOptions;
+    value: string;
+  } | null
+}
+
+export type reducerActionType =
+  | { type: "addUser"; user: userType }
+  | { type: "updateUser"; updatedUser: userType }
+  | { type: "deleteUser"; selectedId: number }
+  | { type: "filterUser"; chosenfilter: filters | null }
+  | { type: "allUser" };

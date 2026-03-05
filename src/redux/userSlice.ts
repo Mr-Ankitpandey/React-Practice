@@ -19,21 +19,21 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     addUser: (state, action) => {
-      state.userData.push({
+      state.userData?.push({
         id: Number(new Date()),
-        name: String(action.payload.name).trim(),
-        city: String(action.payload.city).trim(),
-        age: Number(action.payload.age),
+        name: String(action.payload?.name).trim(),
+        city: String(action.payload?.city).trim(),
+        age: Number(action.payload?.age),
       });
     },
     updateUser: (state, action) => {
-      state.userData = state.userData.map((user) =>
-        user?.id === action.payload.id ? action.payload : user,
+      state.userData = state.userData?.map((user) =>
+        user?.id === action?.payload?.id ? action.payload : user,
       );
     },
     deleteUser: (state, action) => {
-      state.userData = state.userData.filter(
-        (user) => user?.id !== action.payload,
+      state.userData = state?.userData?.filter(
+        (user) => user?.id !== action?.payload,
       );
     },
     filterUser: (state, action) => {
@@ -42,12 +42,13 @@ const userSlice = createSlice({
         return;
       }
       state.appliedFilter = {
-        field: action.payload.selectedField,
-        value: action.payload.selectedValue,
+        field: action?.payload?.selectedField,
+        value: action?.payload?.selectedValue,
       };
     },
     allUser: (state) => {
       state.appliedFilter = null;
+     
     },
   },
 });

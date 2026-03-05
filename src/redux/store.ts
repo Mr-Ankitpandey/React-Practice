@@ -17,5 +17,3 @@ export interface RootState {
         } | null;
     };
 }
-
-export type AppDispatch = typeof store.dispatch;

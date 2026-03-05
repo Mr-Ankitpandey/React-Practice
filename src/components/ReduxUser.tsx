@@ -8,7 +8,7 @@ const ReduxUser = () => {
   const [formData, setFormData] = useState({ name: "", city: "", age: "" });
 
   const dispatch = useDispatch();
-  const userData = useSelector((state: RootState) => state.user.userData);
+  const userData = useSelector((state: RootState) => state.user?.userData);
 
   const handleFormAction = (fd: FormData) => {
     const user = Object.fromEntries(fd);
@@ -22,7 +22,7 @@ const ReduxUser = () => {
   };
 
   const handleIdChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const value = e.target.value;
+    const value = e.target?.value;
     if (value === "select-id") {
       setSelectedId(null);
       setFormData({ name: "", city: "", age: "" });
@@ -30,12 +30,12 @@ const ReduxUser = () => {
     }
     const id = Number(value);
     setSelectedId(id);
-    const selectedUser = userData.find((user) => user?.id === id);
+    const selectedUser = userData?.find((user) => user?.id === id);
     if (selectedUser) {
       setFormData({
-        name: selectedUser.name,
-        city: selectedUser.city,
-        age: String(selectedUser.age),
+        name: selectedUser?.name,
+        city: selectedUser?.city,
+        age: String(selectedUser?.age),
       });
     }
   };
@@ -44,9 +44,9 @@ const ReduxUser = () => {
     dispatch(
       updateUser({
         id: selectedId as number,
-        name: formData.name.trim(),
-        city: formData.city.trim(),
-        age: Number(formData.age),
+        name: formData.name?.trim(),
+        city: formData.city?.trim(),
+        age: Number(formData?.age),
       }),
     );
   };
@@ -65,7 +65,7 @@ const ReduxUser = () => {
           type="text"
           name="name"
           required
-          value={formData.name}
+          value={formData?.name}
           onChange={handleInputChange}
         />
         <br /> <br />
@@ -74,7 +74,7 @@ const ReduxUser = () => {
           type="text"
           name="city"
           required
-          value={formData.city}
+          value={formData?.city}
           onChange={handleInputChange}
         />
         <br /> <br />
@@ -83,7 +83,7 @@ const ReduxUser = () => {
           type="number"
           name="age"
           required
-          value={formData.age}
+          value={formData?.age}
           onChange={handleInputChange}
         />
         <br /> <br />

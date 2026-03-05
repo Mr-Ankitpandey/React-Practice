@@ -24,7 +24,6 @@ const StatePage = () => {
     }
   };
 
-  console.log(userData);
 
   return (
     <>

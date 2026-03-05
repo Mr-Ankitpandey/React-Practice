@@ -20,13 +20,13 @@ const ReduxFilter = () => {
   const [selectedValue, setSelectedValue] = useState<string>("");
 
   const dispatch = useDispatch();
-  const userData = useSelector((state: RootState) => state.user.userData);
+  const userData = useSelector((state: RootState) => state.user?.userData);
   const appliedFilter = useSelector(
-    (state: RootState) => state.user.appliedFilter,
+    (state: RootState) => state.user?.appliedFilter,
   );
 
   const handleFieldChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const value = e.target.value;
+    const value = e.target?.value;
     if (value === "select-field") {
       setSelectedField(null);
     } else {
@@ -35,23 +35,35 @@ const ReduxFilter = () => {
     setSelectedValue("");
   };
 
-  const uniqueValues = useMemo((): (string | number)[] => {
+  const handleUniqueChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedValue(e.target?.value);
+  };
+
+  const uniqueValues = useMemo((): (string | number | undefined)[] => {
     if (!selectedField) return [];
     const key = fieldMap[selectedField];
-    const values = userData.map((user): string | number => user[key]);
-    return Array.from(new Set(values));
-  }, [selectedField, userData]);
+    const values = userData?.map((user) => user[key]);
+    const lowerCaseValues = values?.map((value) => {
+      if (typeof value === "number") return value;
+      if (typeof value === "string") {
+        return value?.toLowerCase();
+      }
+    });
 
-  const handleUniqueChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedValue(e.target.value);
-  };
+    return [...new Set(lowerCaseValues)];
+  }, [selectedField, userData]);
 
   const displayData = useMemo(() => {
     if (!appliedFilter) return userData;
-    const key = fieldMap[appliedFilter.field];
+    const key = fieldMap[appliedFilter?.field];
     const filterVal =
-      key === "age" ? Number(appliedFilter.value) : appliedFilter.value;
-    return userData.filter((user) => user[key] === filterVal);
+      key === "age" ? Number(appliedFilter?.value) : appliedFilter?.value;
+
+    return userData?.filter((user) => {
+      return typeof user[key] === "string" && typeof filterVal === "string"
+        ? user[key]?.toLowerCase() === filterVal?.toLowerCase()
+        : user[key] === filterVal;
+    });
   }, [userData, appliedFilter]);
 
   const handleFilter = () => {
@@ -78,7 +90,7 @@ const ReduxFilter = () => {
         onChange={handleFieldChange}
       >
         <option value="select-field">Select Field</option>
-        {selectFieldOptions.map((field) => (
+        {selectFieldOptions?.map((field) => (
           <option key={field} value={field}>
             {field}
           </option>

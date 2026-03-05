@@ -12,7 +12,8 @@ const fieldMap = {
 } as const;
 
 const ContextFilter = () => {
-  const { userData, appliedFilter, filterUser, allUser } = useContext(UserContext)!;
+  const { userData, appliedFilter, filterUser, allUser } =
+    useContext(UserContext)!;
 
   const [selectedField, setSelectedField] = useState<SelectFieldOptions | null>(
     null,
@@ -20,7 +21,7 @@ const ContextFilter = () => {
   const [selectedValue, setSelectedValue] = useState<string>("");
 
   const handleFieldChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const value = e.target.value;
+    const value = e.target?.value;
     if (value === "select-field") {
       setSelectedField(null);
     } else {
@@ -32,42 +33,44 @@ const ContextFilter = () => {
   const uniqueValues = useMemo((): (string | number | undefined)[] => {
     if (!selectedField) return [];
     const key = fieldMap[selectedField];
-    const values = userData.map((user) => user[key]);
-    const loweCaseValues = values.map((value)=>{
-      if(typeof value === 'number') return value
-      if(typeof value === 'string'){
-        return value.toLowerCase();
+    const values = userData?.map((user) => user[key]);
+    const lowerCaseValues = values?.map((value) => {
+      if (typeof value === "number") return value;
+      if (typeof value === "string") {
+        return value?.toLowerCase();
       }
-    })
-    
-    return [...new Set(loweCaseValues)];
+    });
+
+    return [...new Set(lowerCaseValues)];
   }, [selectedField, userData]);
 
   const handleUniqueChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedValue(e.target.value);
+    setSelectedValue(e.target?.value);
   };
 
   const displayData = useMemo(() => {
     if (!appliedFilter) return userData;
-
-    const key = fieldMap[appliedFilter.field];
+    const key = fieldMap[appliedFilter?.field];
     const filterVal =
-        key === "age" ? Number(appliedFilter.value) : appliedFilter.value
+      key === "age" ? Number(appliedFilter?.value) : appliedFilter?.value;
 
-    return  userData.filter((user) => user[key] === filterVal);
-    
-}, [userData, appliedFilter]);
+    return userData?.filter((user) => {
+      return typeof user[key] === "string" && typeof filterVal === "string"
+        ? user[key]?.toLowerCase() === filterVal?.toLowerCase()
+        : user[key] === filterVal;
+    });
+  }, [userData, appliedFilter]);
 
   const handleFilter = () => {
     if (!selectedField || !selectedValue) {
       alert("Please select both a field and value.");
       return;
     }
-    filterUser({selectedField, selectedValue})
+    filterUser({ selectedField, selectedValue });
   };
 
   const handleAll = () => {
-    allUser()
+    allUser();
     setSelectedField(null);
     setSelectedValue("");
   };
@@ -82,7 +85,7 @@ const ContextFilter = () => {
         onChange={handleFieldChange}
       >
         <option value="select-field">Select Field</option>
-        {selectFieldOptions.map((field) => (
+        {selectFieldOptions?.map((field) => (
           <option key={field} value={field}>
             {field}
           </option>

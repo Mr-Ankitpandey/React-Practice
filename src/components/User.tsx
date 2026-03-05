@@ -17,9 +17,9 @@ const User = ({ passUserData, userData, setUserData }: UserProp) => {
   const handleFormAction = (fd: FormData) => {
     const user: userType = {
       id: Number(new Date()),
-      name: (fd.get("name") as string),
-      city: (fd.get("city") as string) ,
-      age: (fd.get("age") as string),
+      name: (fd?.get("name") as string),
+      city: (fd?.get("city") as string) ,
+      age: (fd?.get("age") as string),
     };
     passUserData(user);
     setFormData({ name: "", city: "", age: "" });
@@ -34,7 +34,7 @@ const User = ({ passUserData, userData, setUserData }: UserProp) => {
   };
 
   const handleIdChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const value = e.target.value;
+    const value = e.target?.value;
 
     if (value === "select-id") {
       setSelectedId(null);
@@ -43,13 +43,13 @@ const User = ({ passUserData, userData, setUserData }: UserProp) => {
     }
     const id = Number(value);
     setSelectedId(id);
-    const selectedUser = userData?.find((user) => user.id === id);
+    const selectedUser = userData?.find((user) => user?.id === id);
 
     if (selectedUser) {
       setFormData({
-        name: selectedUser.name,
-        city: selectedUser.city,
-        age: String(selectedUser.age),
+        name: selectedUser?.name,
+        city: selectedUser?.city,
+        age: String(selectedUser?.age),
       });
     }
   };
@@ -59,9 +59,9 @@ const User = ({ passUserData, userData, setUserData }: UserProp) => {
 
     const updatedUser = {
       id: selectedId,
-      name: formData.name.trim(),
-      city: formData.city.trim(),
-      age: Number(formData.age),
+      name: formData.name?.trim(),
+      city: formData.city?.trim(),
+      age: Number(formData?.age),
     };
 
     passUserData(updatedUser, true);
@@ -69,7 +69,7 @@ const User = ({ passUserData, userData, setUserData }: UserProp) => {
 
   const handleDelete = (selectedId: number) => {
     setUserData((prevUsers) =>
-      prevUsers.filter((user) => user.id !== selectedId),
+      prevUsers.filter((user) => user?.id !== selectedId),
     );
     setFormData({ name: "", city: "", age: "" });
     setSelectedId(null);
@@ -84,7 +84,7 @@ const User = ({ passUserData, userData, setUserData }: UserProp) => {
           type="text"
           name="name"
           required
-          value={formData.name}
+          value={formData?.name}
           onChange={handleInputChange}
         />
         <br /> <br />
@@ -93,7 +93,7 @@ const User = ({ passUserData, userData, setUserData }: UserProp) => {
           type="text"
           name="city"
           required
-          value={formData.city}
+          value={formData?.city}
           onChange={handleInputChange}
         />
         <br /> <br />
@@ -102,7 +102,7 @@ const User = ({ passUserData, userData, setUserData }: UserProp) => {
           type="number"
           name="age"
           required
-          value={formData.age}
+          value={formData?.age}
           onChange={handleInputChange}
         />
         <br /> <br />

@@ -52,15 +52,17 @@ const Filter = ({ userData }: FilterProp) => {
     setSelectedValue(e.target?.value);
   };
 
-   const displayData = useMemo(() => {
-      if (!appliedFilter) return userData;
-  
-      const key = fieldMap[appliedFilter?.field];
-      const filterVal =
-          key === "age" ? Number(appliedFilter?.value) : appliedFilter?.value
-  
-      return  userData?.filter((user) => user[key] === filterVal);
-      
+  const displayData = useMemo(() => {
+    if (!appliedFilter) return userData;
+    const key = fieldMap[appliedFilter?.field];
+    const filterVal =
+      key === "age" ? Number(appliedFilter?.value) : appliedFilter?.value;
+
+    return userData?.filter((user) => {
+      return typeof user[key] === "string" && typeof filterVal === "string"
+        ? user[key]?.toLowerCase() === filterVal?.toLowerCase()
+        : user[key] === filterVal;
+    });
   }, [userData, appliedFilter]);
 
   const handleFilter = () => {
@@ -69,13 +71,13 @@ const Filter = ({ userData }: FilterProp) => {
       return;
     }
     setAppliedFilter({
-      field : selectedField,
-      value : selectedValue
-    })
+      field: selectedField,
+      value: selectedValue,
+    });
   };
 
   const handleAll = () => {
-    setAppliedFilter(null)
+    setAppliedFilter(null);
     setSelectedField(null);
     setSelectedValue("");
   };
