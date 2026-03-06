@@ -3,8 +3,8 @@ import type { SelectFieldOptions, userType } from "../Types/userType";
 import Table from "./Table";
 import { uniqueValuesHelper } from "../utils/uniqueValuesHelper";
 import { displayDataHelper } from "../utils/displayDataHelper";
-import FormButton from "./ui/FormButton";
-import FormSelect from "./ui/FormSelect";
+import Select from "./ui/Select";
+import Button from "./ui/Button";
 
 type FilterProps = {
   userData: userType[];
@@ -32,7 +32,7 @@ const Filter = ({ userData, appliedFilter, onFilter, onAll }: FilterProps) => {
 
   const handleFieldChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target?.value;
-    setSelectedField(value ? (value as SelectFieldOptions) : null);
+    setSelectedField(value as SelectFieldOptions);
     setSelectedValue("");
   };
 
@@ -48,7 +48,7 @@ const Filter = ({ userData, appliedFilter, onFilter, onAll }: FilterProps) => {
     return displayDataHelper({ appliedFilter, userData });
   }, [userData, appliedFilter]);
 
-  const handleFilter = () => {
+  const filterBtnHandler = () => {
     if (!selectedField || !selectedValue) {
       alert("Please select both a field and a value before filtering.");
       return;
@@ -56,15 +56,14 @@ const Filter = ({ userData, appliedFilter, onFilter, onAll }: FilterProps) => {
     onFilter({ selectedField, selectedValue });
   };
 
-  const handleAll = () => {
+  const allBtnHandler = () => {
     onAll();
     setSelectedField(null);
     setSelectedValue("");
   };
 
-  const fieldOptions = selectFieldOptions.map((f) => ({ label: f, value: f }));
-  const valueOptions = uniqueValues.map((v) => ({
-    label: v as string | number,
+  const fieldOptions = selectFieldOptions?.map((f) => ({ value: f }));
+  const valueOptions = uniqueValues?.map((v) => ({
     value: v as string | number,
   }));
 
@@ -72,7 +71,7 @@ const Filter = ({ userData, appliedFilter, onFilter, onAll }: FilterProps) => {
     <>
       <h1>Filters</h1>
       <label htmlFor="select-field">Select Field : </label>
-      <FormSelect
+      <Select
         id="select-field"
         value={selectedField ?? ""}
         onChange={handleFieldChange}
@@ -81,7 +80,7 @@ const Filter = ({ userData, appliedFilter, onFilter, onAll }: FilterProps) => {
       />
       <br /> <br />
       <label htmlFor="select-unique">Unique Values : </label>
-      <FormSelect
+      <Select
         id="select-unique"
         value={selectedValue}
         onChange={handleUniqueChange}
@@ -89,12 +88,12 @@ const Filter = ({ userData, appliedFilter, onFilter, onAll }: FilterProps) => {
         placeholder="Select Value"
       />
       <br /> <br />
-      <FormButton type="button" onClick={handleFilter}>
+      <Button type="button" onClick={filterBtnHandler}>
         Filter
-      </FormButton>
-      <FormButton type="button" onClick={handleAll}>
+      </Button>
+      <Button type="button" onClick={allBtnHandler}>
         All
-      </FormButton>
+      </Button>
       <hr />
       <Table columns={userTableColumns} data={displayData} />
     </>

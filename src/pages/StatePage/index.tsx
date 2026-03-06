@@ -1,8 +1,8 @@
 import { useState } from "react";
-import Filter from "../components/Filter";
-import User from "../components/User";
-import type { SelectFieldOptions, userType } from "../Types/userType";
-import { createStateHandlers } from "../utils/userStateHandlers";
+import Filter from "../../components/Filter";
+import User from "../../components/User";
+import type { SelectFieldOptions, userType } from "../../Types/userType";
+import { StateHandlers } from "../../utils/userStateHandlers";
 
 const StatePage = () => {
   const [userData, setUserData] = useState<userType[]>([]);
@@ -12,7 +12,7 @@ const StatePage = () => {
   } | null>(null);
 
   const { handleAdd, handleUpdate, handleDelete, handleFilter, handleAll } =
-    createStateHandlers(setUserData, setAppliedFilter);
+    StateHandlers(setUserData, setAppliedFilter);
 
   return (
     <>

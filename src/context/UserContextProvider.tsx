@@ -16,10 +16,10 @@ const reducerFn = (state:reducerStateType, action:reducerActionType) => {
         userData: [
           ...state.userData,
           {
-            id: action.user?.id,
-            name: action.user?.name.trim(),
-            city: action.user?.city.trim(),
-            age: Number(action.user?.age),
+            id: action?.user?.id,
+            name: action?.user?.name.trim(),
+            city: action?.user?.city.trim(),
+            age: Number(action?.user?.age),
           },
         ],
       };
@@ -27,7 +27,7 @@ const reducerFn = (state:reducerStateType, action:reducerActionType) => {
       return {
         ...state,
         userData: state.userData?.map((u) =>
-          u.id === action.updatedUser?.id ? action.updatedUser : u,
+          u.id === action?.updatedUser?.id ? action?.updatedUser : u,
         ),
       };
     case "deleteUser":

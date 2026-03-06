@@ -3,9 +3,10 @@ import type { userType } from "../Types/userType";
 import { idChangeHelper } from "../utils/idChangeHelper";
 import { newUser } from "../utils/newUserHelper";
 import Form from "./ui/Form";
-import FormInput from "./ui/FormInput";
-import FormButton from "./ui/FormButton";
-import FormSelect from "./ui/FormSelect";
+import Select from "./ui/Select";
+import Button from "./ui/Button";
+import Input from "./ui/Input";
+import Label from "./ui/Label";
 
 type UserFormProps = {
   userData: userType[];
@@ -16,96 +17,95 @@ type UserFormProps = {
 
 const User = ({ userData, onAdd, onUpdate, onDelete }: UserFormProps) => {
   const [selectedId, setSelectedId] = useState<number | null>(null);
-  const [formData, setFormData] = useState({ name: "", city: "", age: "" });
+  const [userFormInputFieldValue, setUserFormInputFieldValue] = useState({ name: "", city: "", age: "" });
 
   const handleFormAction = (fd: FormData) => {
     const user = newUser(fd);
     onAdd(user);
-    setFormData({ name: "", city: "", age: "" });
+    setUserFormInputFieldValue({ name: "", city: "", age: "" });
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    setUserFormInputFieldValue((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleIdChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    idChangeHelper({ e, setSelectedId, setFormData, userData });
+    idChangeHelper({ e, setSelectedId, setUserFormInputFieldValue, userData });
   };
 
-  const handleUpdate = () => {
+  const updateBtnHandler = () => {
     if (!selectedId) return;
     onUpdate({
       id: selectedId,
-      name: formData.name?.trim(),
-      city: formData.city?.trim(),
-      age: Number(formData?.age),
+      name: userFormInputFieldValue.name?.trim(),
+      city: userFormInputFieldValue.city?.trim(),
+      age: Number(userFormInputFieldValue?.age),
     });
   };
 
-  const handleDelete = () => {
+  const deleteBtnHandler = () => {
     if (!selectedId) return;
     onDelete(selectedId);
-    setFormData({ name: "", city: "", age: "" });
+    setUserFormInputFieldValue({ name: "", city: "", age: "" });
     setSelectedId(null);
   };
 
-  const idOptions = userData.map((user) => ({
-    label: user.id,
-    value: user.id,
+  const selectIdOptions = userData?.map((user) => ({
+    value: user?.id,
   }));
 
   return (
     <>
       <h1>User Form</h1>
       <Form action={handleFormAction}>
-        <label htmlFor="name">Name : </label>
-        <FormInput
+        <Label htmlfor="name">Name : </Label>
+        <Input
           name="name"
-          value={formData.name}
+          value={userFormInputFieldValue?.name}
           onChange={handleInputChange}
           required
         />
         <br /> <br />
-        <label htmlFor="city">City : </label>
-        <FormInput
+        <Label htmlfor="city">City : </Label>
+        <Input
           name="city"
-          value={formData.city}
+          value={userFormInputFieldValue?.city}
           onChange={handleInputChange}
           required
         />
         <br /> <br />
-        <label htmlFor="age">Age : </label>
-        <FormInput
+        <Label htmlfor="age">Age : </Label>
+        <Input
           name="age"
           type="number"
-          value={formData.age}
+          value={userFormInputFieldValue?.age}
           onChange={handleInputChange}
           required
         />
         <br /> <br />
         {!selectedId ? (
-          <FormButton type="submit">
+          <Button type="submit">
             Save
-          </FormButton>
+          </Button>
         ) : (
           <div>
-            <FormButton type="button" onClick={handleUpdate}>
+            <Button type="button" onClick={updateBtnHandler}>
               Update
-            </FormButton>
-            <FormButton type="button" onClick={handleDelete}>
+            </Button>
+            <Button type="button" onClick={deleteBtnHandler}>
               Delete
-            </FormButton>
+            </Button>
           </div>
         )}
       </Form>
       <hr />
-      <label htmlFor="select-id">Select based on ID: </label>
-      <FormSelect
+      <Label htmlfor="select-id">Select based on ID: </Label>
+      <Select
         id="select-id"
         value={selectedId ?? ""}
         onChange={handleIdChange}
-        options={idOptions}
+        options={selectIdOptions}
         placeholder="Select ID"
       />
     </>

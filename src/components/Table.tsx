@@ -15,16 +15,16 @@ const Table = memo(({ columns, data }: TableProps) => {
         <table border={1}>
             <thead>
                 <tr>
-                    {columns.map((col) => (
-                        <th key={col.key}>{col.label}</th>
+                    {columns?.map((col) => (
+                        <th key={col?.key}>{col?.label}</th>
                     ))}
                 </tr>
             </thead>
             <tbody>
-                {data.map((row) => (
-                    <tr key={row.id as string | number}>
-                        {columns.map((col) => (
-                            <td key={col.key}>{String(row[col.key] ?? "")}</td>
+                {data?.map((row) => (
+                    <tr key={row?.id as string | number}>
+                        {columns?.map((col) => (
+                            <td key={col?.key}>{String(row[col?.key] ?? "")}</td>
                         ))}
                     </tr>
                 ))}

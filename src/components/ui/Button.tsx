@@ -1,10 +1,10 @@
-type FormButtonProps = {
+type ButtonProps = {
     type?: "button" | "submit" | "reset";
     onClick?: () => void;
     children: React.ReactNode;
 };
 
-const FormButton = ({ type = "button", onClick, children }: FormButtonProps) => {
+const Button = ({ type = "button", onClick, children }: ButtonProps) => {
     return (
         <button type={type} onClick={onClick}>
             {children}
@@ -12,4 +12,4 @@ const FormButton = ({ type = "button", onClick, children }: FormButtonProps) => 
     );
 };
 
-export default FormButton;
+export default Button;

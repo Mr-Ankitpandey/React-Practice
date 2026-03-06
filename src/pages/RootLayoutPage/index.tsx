@@ -1,4 +1,4 @@
-import MainNavbar from '../components/MainNavbar'
+import MainNavbar from '../../components/MainNavbar'
 import { Outlet } from 'react-router-dom'
 
 const RootLayout = () => {

@@ -1,8 +1,8 @@
 import { useContext } from "react";
-import { UserContextProvider } from "../context/UserContextProvider";
-import { UserContext } from "../context/context";
-import User from "../components/User";
-import Filter from "../components/Filter";
+import { UserContextProvider } from "../../context/UserContextProvider";
+import { UserContext } from "../../context/context";
+import User from "../../components/User";
+import Filter from "../../components/Filter";
 
 const ContextPageInner = () => {
   const { userData, addUser, updateUser, deleteUser, filterUser, allUser, appliedFilter } =

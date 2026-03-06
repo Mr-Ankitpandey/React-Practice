@@ -3,7 +3,7 @@ import type { userType } from "../Types/userType";
 type idChangeHelperType = {
   e: React.ChangeEvent<HTMLSelectElement>;
   setSelectedId: React.Dispatch<React.SetStateAction<number | null>>;
-  setFormData: React.Dispatch<
+  setUserFormInputFieldValue: React.Dispatch<
     React.SetStateAction<{
       name: string;
       city: string;
@@ -16,20 +16,20 @@ type idChangeHelperType = {
 export const idChangeHelper = ({
   e,
   setSelectedId,
-  setFormData,
+  setUserFormInputFieldValue,
   userData,
 }: idChangeHelperType) => {
   const value = e.target?.value;
   if (!value) {
     setSelectedId(null);
-    setFormData({ name: "", city: "", age: "" });
+    setUserFormInputFieldValue({ name: "", city: "", age: "" });
     return;
   }
   const id = Number(value);
   setSelectedId(id);
   const selectedUser = userData?.find((user) => user?.id === id);
   if (selectedUser) {
-    setFormData({
+    setUserFormInputFieldValue({
       name: selectedUser?.name,
       city: selectedUser?.city,
       age: String(selectedUser?.age),

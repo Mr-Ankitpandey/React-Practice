@@ -1,11 +1,11 @@
 import { useDispatch, useSelector } from "react-redux";
 import { Provider } from "react-redux";
-import { store } from "../redux/store";
-import type { RootState } from "../redux/store";
-import { addUser, updateUser, deleteUser, filterUser, allUser } from "../redux/userSlice";
-import User from "../components/User";
-import Filter from "../components/Filter";
-import type { SelectFieldOptions, userType } from "../Types/userType";
+import { store } from "../../redux/store";
+import type { RootState } from "../../redux/store";
+import { addUser, updateUser, deleteUser, filterUser, allUser } from "../../redux/userSlice";
+import User from "../../components/User";
+import Filter from "../../components/Filter";
+import type { SelectFieldOptions, userType } from "../../Types/userType";
 
 const ReduxPageInner = () => {
   const dispatch = useDispatch();
