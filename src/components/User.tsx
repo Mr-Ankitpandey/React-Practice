@@ -59,29 +59,29 @@ const User = ({ userData, onAdd, onUpdate, onDelete }: UserFormProps) => {
     <>
       <h1>User Form</h1>
       <Form action={handleFormAction}>
-        <Label htmlfor="name">Name : </Label>
         <Input
           name="name"
           value={userFormInputFieldValue?.name}
           onChange={handleInputChange}
           required
+          label= "Name :"
         />
         <br /> <br />
-        <Label htmlfor="city">City : </Label>
         <Input
           name="city"
           value={userFormInputFieldValue?.city}
           onChange={handleInputChange}
           required
+          label = "City : "
         />
         <br /> <br />
-        <Label htmlfor="age">Age : </Label>
         <Input
           name="age"
           type="number"
           value={userFormInputFieldValue?.age}
           onChange={handleInputChange}
           required
+          label = "Age :"
         />
         <br /> <br />
         {!selectedId ? (

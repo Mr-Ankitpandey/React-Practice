@@ -1,3 +1,5 @@
+import Label from "./Label";
+
 type InputProps = {
   id?: string;
   type?: "text" | "number" | "email" | "password";
@@ -6,6 +8,7 @@ type InputProps = {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   required?: boolean;
   placeholder?: string;
+  label : string
 };
 
 const Input = ({
@@ -16,8 +19,11 @@ const Input = ({
   onChange,
   required = false,
   placeholder,
+  label
 }: InputProps) => {
   return (
+    <>
+    {label && <Label htmlfor={label}>{label}</Label>}
     <input
       id={id ?? name}
       type={type}
@@ -27,6 +33,7 @@ const Input = ({
       required={required}
       placeholder={placeholder}
     />
+    </>
   );
 };
 

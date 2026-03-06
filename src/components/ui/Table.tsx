@@ -11,6 +11,7 @@ type TableProps = {
 };
 
 const Table = memo(({ columns, data }: TableProps) => {
+    console.log(data)
     return (
         <table border={1}>
             <thead>

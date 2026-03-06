@@ -2,15 +2,32 @@ import { useDispatch, useSelector } from "react-redux";
 import { Provider } from "react-redux";
 import { store } from "../../redux/store";
 import type { RootState } from "../../redux/store";
-import { addUser, updateUser, deleteUser, filterUser, allUser } from "../../redux/userSlice";
+import {
+  addUser,
+  updateUser,
+  deleteUser,
+  filterUser,
+  allUser,
+} from "../../redux/userSlice";
 import User from "../../components/User";
 import Filter from "../../components/Filter";
 import type { SelectFieldOptions, userType } from "../../Types/userType";
+import Table from "../../components/ui/Table";
+import { useMemo } from "react";
+import { displayDataHelper } from "../../utils/displayDataHelper";
+
+const userTableColumns = [
+  { key: "name", label: "Name" },
+  { key: "city", label: "City" },
+  { key: "age", label: "Age" },
+];
 
 const ReduxPageInner = () => {
   const dispatch = useDispatch();
   const userData = useSelector((state: RootState) => state.user?.userData);
-  const appliedFilter = useSelector((state: RootState) => state.user?.appliedFilter);
+  const appliedFilter = useSelector(
+    (state: RootState) => state.user?.appliedFilter,
+  );
 
   const handleAdd = (user: userType) => {
     dispatch(addUser({ name: user?.name, city: user?.city, age: user?.age }));
@@ -38,6 +55,10 @@ const ReduxPageInner = () => {
     dispatch(allUser());
   };
 
+  const displayData = useMemo(() => {
+    return displayDataHelper({ appliedFilter, userData });
+  }, [userData, appliedFilter]);
+
   return (
     <>
       <h1>Redux Page</h1>
@@ -53,6 +74,7 @@ const ReduxPageInner = () => {
         onFilter={handleFilter}
         onAll={handleAll}
       />
+      <Table columns={userTableColumns} data={displayData} />
     </>
   );
 };

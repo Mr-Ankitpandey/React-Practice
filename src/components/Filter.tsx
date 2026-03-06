@@ -1,8 +1,6 @@
 import { useMemo, useState } from "react";
 import type { SelectFieldOptions, userType } from "../Types/userType";
-import Table from "./Table";
 import { uniqueValuesHelper } from "../utils/uniqueValuesHelper";
-import { displayDataHelper } from "../utils/displayDataHelper";
 import Select from "./ui/Select";
 import Button from "./ui/Button";
 
@@ -18,13 +16,8 @@ type FilterProps = {
 
 const selectFieldOptions: SelectFieldOptions[] = ["Name", "Age", "City"];
 
-const userTableColumns = [
-  { key: "name", label: "Name" },
-  { key: "city", label: "City" },
-  { key: "age", label: "Age" },
-];
 
-const Filter = ({ userData, appliedFilter, onFilter, onAll }: FilterProps) => {
+const Filter = ({ userData, onFilter, onAll }: FilterProps) => {
   const [selectedField, setSelectedField] = useState<SelectFieldOptions | null>(
     null,
   );
@@ -44,9 +37,6 @@ const Filter = ({ userData, appliedFilter, onFilter, onAll }: FilterProps) => {
     setSelectedValue(e.target?.value);
   };
 
-  const displayData = useMemo(() => {
-    return displayDataHelper({ appliedFilter, userData });
-  }, [userData, appliedFilter]);
 
   const filterBtnHandler = () => {
     if (!selectedField || !selectedValue) {
@@ -95,7 +85,7 @@ const Filter = ({ userData, appliedFilter, onFilter, onAll }: FilterProps) => {
         All
       </Button>
       <hr />
-      <Table columns={userTableColumns} data={displayData} />
+     
     </>
   );
 };
