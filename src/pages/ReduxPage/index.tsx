@@ -13,7 +13,7 @@ const ReduxPageInner = () => {
   const appliedFilter = useSelector((state: RootState) => state.user?.appliedFilter);
 
   const handleAdd = (user: userType) => {
-    dispatch(addUser({ name: user.name, city: user.city, age: user.age }));
+    dispatch(addUser({ name: user?.name, city: user?.city, age: user?.age }));
   };
 
   const handleUpdate = (user: userType) => {

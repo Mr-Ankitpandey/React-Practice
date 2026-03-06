@@ -21,14 +21,14 @@ const userSlice = createSlice({
     addUser: (state, action) => {
       state.userData?.push({
         id: Number(new Date()),
-        name: String(action.payload?.name).trim(),
-        city: String(action.payload?.city).trim(),
-        age: Number(action.payload?.age),
+        name: String(action?.payload?.name).trim(),
+        city: String(action?.payload?.city).trim(),
+        age: Number(action?.payload?.age),
       });
     },
     updateUser: (state, action) => {
       state.userData = state.userData?.map((user) =>
-        user?.id === action?.payload?.id ? action.payload : user,
+        user?.id === action?.payload?.id ? action?.payload : user,
       );
     },
     deleteUser: (state, action) => {
@@ -37,7 +37,7 @@ const userSlice = createSlice({
       );
     },
     filterUser: (state, action) => {
-      if (action.payload === null || action.payload?.selectedField === null) {
+      if (action?.payload === null || action.payload?.selectedField === null) {
         state.appliedFilter = null;
         return;
       }
