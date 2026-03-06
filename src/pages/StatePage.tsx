@@ -1,39 +1,34 @@
 import { useState } from "react";
 import Filter from "../components/Filter";
 import User from "../components/User";
-import type { userType } from "../Types/userType";
+import type { SelectFieldOptions, userType } from "../Types/userType";
+import { createStateHandlers } from "../utils/userStateHandlers";
 
 const StatePage = () => {
   const [userData, setUserData] = useState<userType[]>([]);
+  const [appliedFilter, setAppliedFilter] = useState<{
+    field: SelectFieldOptions;
+    value: string;
+  } | null>(null);
 
-  const getUserData = (user: userType, isUpdate = false) => {
-    if (isUpdate) {
-      setUserData((prevUsers) =>
-        prevUsers.map((u) => (u.id === user?.id ? user : u)),
-      );
-    } else {
-      setUserData((prevUsers) => [
-        ...prevUsers,
-        {
-          id: user?.id,
-          name: user?.name.trim(),
-          city: user?.city.trim(),
-          age: Number(user?.age),
-        },
-      ]);
-    }
-  };
-
+  const { handleAdd, handleUpdate, handleDelete, handleFilter, handleAll } =
+    createStateHandlers(setUserData, setAppliedFilter);
 
   return (
     <>
       <h1>State Page</h1>
       <User
-        passUserData={getUserData}
         userData={userData}
-        setUserData={setUserData}
+        onAdd={handleAdd}
+        onUpdate={handleUpdate}
+        onDelete={handleDelete}
       />
-      <Filter userData={userData} />
+      <Filter
+        userData={userData}
+        appliedFilter={appliedFilter}
+        onFilter={handleFilter}
+        onAll={handleAll}
+      />
     </>
   );
 };

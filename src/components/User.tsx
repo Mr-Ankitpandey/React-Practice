@@ -2,116 +2,112 @@ import { useState } from "react";
 import type { userType } from "../Types/userType";
 import { idChangeHelper } from "../utils/idChangeHelper";
 import { newUser } from "../utils/newUserHelper";
-type UserProp = {
-  passUserData: (user: userType, isUpdate?: boolean) => void;
+import Form from "./ui/Form";
+import FormInput from "./ui/FormInput";
+import FormButton from "./ui/FormButton";
+import FormSelect from "./ui/FormSelect";
+
+type UserFormProps = {
   userData: userType[];
-  setUserData: React.Dispatch<React.SetStateAction<userType[]>>;
+  onAdd: (user: userType) => void;
+  onUpdate: (user: userType) => void;
+  onDelete: (id: number) => void;
 };
 
-const User = ({ passUserData, userData, setUserData }: UserProp) => {
+const User = ({ userData, onAdd, onUpdate, onDelete }: UserFormProps) => {
   const [selectedId, setSelectedId] = useState<number | null>(null);
-  const [formData, setFormData] = useState({
-    name: "",
-    city: "",
-    age: "",
-  });
+  const [formData, setFormData] = useState({ name: "", city: "", age: "" });
 
   const handleFormAction = (fd: FormData) => {
-    const user = newUser(fd)
-    passUserData(user);
+    const user = newUser(fd);
+    onAdd(user);
     setFormData({ name: "", city: "", age: "" });
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-   const handleIdChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-      idChangeHelper({e,setSelectedId, setFormData,  userData})
-    };
+  const handleIdChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    idChangeHelper({ e, setSelectedId, setFormData, userData });
+  };
 
   const handleUpdate = () => {
     if (!selectedId) return;
-
-    const updatedUser = {
+    onUpdate({
       id: selectedId,
       name: formData.name?.trim(),
       city: formData.city?.trim(),
       age: Number(formData?.age),
-    };
-
-    passUserData(updatedUser, true);
+    });
   };
 
-  const handleDelete = (selectedId: number) => {
-    setUserData((prevUsers) =>
-      prevUsers.filter((user) => user?.id !== selectedId),
-    );
+  const handleDelete = () => {
+    if (!selectedId) return;
+    onDelete(selectedId);
     setFormData({ name: "", city: "", age: "" });
     setSelectedId(null);
   };
 
+  const idOptions = userData.map((user) => ({
+    label: user.id,
+    value: user.id,
+  }));
+
   return (
     <>
       <h1>User Form</h1>
-      <form action={handleFormAction}>
+      <Form action={handleFormAction}>
         <label htmlFor="name">Name : </label>
-        <input
-          type="text"
+        <FormInput
           name="name"
-          required
-          value={formData?.name}
+          value={formData.name}
           onChange={handleInputChange}
+          required
         />
         <br /> <br />
         <label htmlFor="city">City : </label>
-        <input
-          type="text"
+        <FormInput
           name="city"
-          required
-          value={formData?.city}
+          value={formData.city}
           onChange={handleInputChange}
+          required
         />
         <br /> <br />
         <label htmlFor="age">Age : </label>
-        <input
-          type="number"
+        <FormInput
           name="age"
-          required
-          value={formData?.age}
+          type="number"
+          value={formData.age}
           onChange={handleInputChange}
+          required
         />
         <br /> <br />
         {!selectedId ? (
-          <button type="submit">Save</button>
+          <FormButton type="submit">
+            Save
+          </FormButton>
         ) : (
           <div>
-            <button type="button" onClick={handleUpdate}>
+            <FormButton type="button" onClick={handleUpdate}>
               Update
-            </button>
-            <button
-              type="button"
-              onClick={() => handleDelete(Number(selectedId))}
-            >
+            </FormButton>
+            <FormButton type="button" onClick={handleDelete}>
               Delete
-            </button>
+            </FormButton>
           </div>
         )}
-      </form>
+      </Form>
       <hr />
-      <label htmlFor="select">Select based on ID: </label>
-      <select onChange={handleIdChange} value={selectedId ?? "select-id"}>
-        <option value="select-id">Select ID</option>
-        {userData?.map((user) => (
-          <option key={user?.id} value={user?.id}>
-            {user?.id}
-          </option>
-        ))}
-      </select>
+      <label htmlFor="select-id">Select based on ID: </label>
+      <FormSelect
+        id="select-id"
+        value={selectedId ?? ""}
+        onChange={handleIdChange}
+        options={idOptions}
+        placeholder="Select ID"
+      />
     </>
   );
 };

@@ -1,34 +1,36 @@
 import { memo } from "react";
-import type { userType } from "../Types/userType";
-type TableProp = {
-    userData: userType[];
 
-}
+export type TableColumn = {
+    key: string;
+    label: string;
+};
 
-const Table = memo(({userData }: TableProp) => {
-    
-  return (
-    <>
-    <table border={1}>
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>City</th>
-                <th>Age</th>
-            </tr>
-        </thead>
-        <tbody>
-            {userData?.map((user) => (
-                <tr key={user?.id}>
-                    <td>{user?.name}</td>
-                    <td>{user?.city}</td>
-                    <td>{user?.age}</td>
+type TableProps = {
+    columns: TableColumn[];
+    data: Record<string, unknown>[];
+};
+
+const Table = memo(({ columns, data }: TableProps) => {
+    return (
+        <table border={1}>
+            <thead>
+                <tr>
+                    {columns.map((col) => (
+                        <th key={col.key}>{col.label}</th>
+                    ))}
                 </tr>
-            ))}
-        </tbody>
-    </table>
-    </>
-  )
+            </thead>
+            <tbody>
+                {data.map((row) => (
+                    <tr key={row.id as string | number}>
+                        {columns.map((col) => (
+                            <td key={col.key}>{String(row[col.key] ?? "")}</td>
+                        ))}
+                    </tr>
+                ))}
+            </tbody>
+        </table>
+    );
 });
 
-export default Table
+export default Table;
